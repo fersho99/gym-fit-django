@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework.test import APIClient
 
@@ -28,7 +28,9 @@ class CategoryTestCase(TestCase):
 class ProductTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='tester', password='tester123')
+        self.user = get_user_model().objects.create_user(
+            username='tester', email='tester@gymfit.test', password='tester123',
+        )
         self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(name='Electronica')
         self.product = Product.objects.create(
